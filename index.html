@@ -1,0 +1,49 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rafa</title>
+</head>
+<body>
+    <button onclick="turn(this)">Turn ON</button>
+
+    <p id="console"></p>
+    <textarea name="" id="code" cols="30" rows="10" style="width: 100%;"></textarea>
+    <button onclick="runjs()">Run Javascript</button>
+    <div id="codeDiv"></div>
+</body>
+<script>
+    var on = false
+    function turn(button){
+        on = !on
+        if (on == true){
+            button.innerHTML = "Turn OFF"
+            fetch("http://192.168.1.81:6668")
+            .then(function(response) { 
+                if (response.ok) {
+                    console.log("Got it");
+                } else {
+                    console.log("Error");
+                }
+            });
+        }else{
+            button.innerHTML = "Turn ON"
+        }
+    }
+
+    function runjs(){
+        var code = document.getElementById("code").value
+        var codeDiv = document.getElementById("codeDiv")
+        var con = document.getElementById("console")
+
+        document.getElementById("console").innerHTML = ""
+
+        code = code.toString().replaceAll('console.log','document.getElementById("console").innerHTML += "\\n\\r"+ ')
+
+        // codeDiv.innerHTML = "<script>"+code.toString()+"</\script>"
+        eval(code.toString())
+        console.log(code.toString())
+    }
+</script>
+</html>
